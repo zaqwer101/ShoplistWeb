@@ -13,7 +13,7 @@
     <br>
     <input v-model="user" placeholder="Username">
     <input v-model="password" placeholder="Password">
-    <p> {{ user }} {{ password }} </p>
+    <p v-if="token != ''">Token: {{ token }} </p>
   </div>
   <script src="script.js"></script>
 </body>
