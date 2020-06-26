@@ -3,7 +3,8 @@ var example2 = new Vue
     el: '#example',
     data: {
       user: '',
-      password: ''
+      password: '',
+      token: ''
     },
 
     methods: {
@@ -20,7 +21,8 @@ var example2 = new Vue
           .then( (response) => 
           {
             // If everything is OK
-            alert(response.data.token);
+            this.token = response.data.token
+            console.log("Token: " + this.token)
           }, (error) => 
           {
             // If an error occurred
