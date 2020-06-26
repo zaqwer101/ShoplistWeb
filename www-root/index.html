@@ -5,15 +5,26 @@
 <title>Vue test</title>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 
 <body>
-  <div id="example">
-    <button v-on:click="getToken">Запрос</button>
-    <br>
+  <div id="example" class="container">
     <input v-model="user" placeholder="Username">
     <input v-model="password" placeholder="Password">
+    <button v-on:click="getItems">Запрос</button>
     <p v-if="token != ''">Token: {{ token }} </p>
+
+    <template v-for="item in items">
+      <p>
+        <label>
+          <input class="filled-in" type="checkbox" v-bind:id="item.name" v-model="bought" v-bind:value="item.name" v-bind:disabled="item.name in bought">
+          <span>{{item.name}}</span>
+        </label>
+      </p>
+    </template>
+
   </div>
   <script src="script.js"></script>
 </body>
