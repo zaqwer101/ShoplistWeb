@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vue test</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+  <div id="example">
+    <button v-on:click="getToken">Запрос</button>
+    <br>
+    <input v-model="user" placeholder="Username">
+    <input v-model="password" placeholder="Password">
+    <p> {{ user }} {{ password }} </p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
