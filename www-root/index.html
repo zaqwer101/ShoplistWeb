@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>Vue test</title>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <meta charset="utf-8">
+  <title>Vue test</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 
 <body>
@@ -19,7 +20,8 @@
     <template v-for="item in items">
       <p>
         <label>
-          <input class="filled-in" type="checkbox" v-bind:id="item.name" v-model="bought" v-bind:value="item.name" v-bind:disabled="item.name in bought">
+          <input class="filled-in" type="checkbox" v-bind:id="item.name" v-model="bought" v-bind:value="item.name"
+            :disabled="bought.includes(item.name)">
           <span>{{item.name}}</span>
         </label>
       </p>
@@ -28,4 +30,5 @@
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>
