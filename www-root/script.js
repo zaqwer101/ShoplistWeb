@@ -6,7 +6,7 @@ var example2 = new Vue({
     password: '',
     token: '',
     items: [],
-    bought: []
+    bought: [],
   },
 
   methods: {
@@ -36,9 +36,8 @@ var example2 = new Vue({
     },
     getItems: function(event) {
       if (this.token == '') {
-        // If token was not set
-        this.getToken(null)
-        if (this.token == '') return
+        this.getToken(this);
+        return
       }
       axios.get('https://' + this.address + '/shoplist?token=' + this.token)
           .then(
@@ -56,6 +55,12 @@ var example2 = new Vue({
                 alert('Can not get items');
                 console.log(error)
               })
+    },
+    deleteItem: function(event) {
+      return;
+    },
+    onCheck: function(event) {
+      console.log(event.target.id);
     }
   }
 })

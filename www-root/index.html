@@ -12,21 +12,21 @@
 
 <body>
   <div id="example" class="container">
-    <input v-model="user" placeholder="Username">
-    <input v-model="password" placeholder="Password">
-    <button v-on:click="getItems">Запрос</button>
+    <input v-model="user" placeholder="Username" v-if="token == ''">
+    <input v-model="password" placeholder="Password" v-if="token == ''">
+    <button v-on:click=" getItems">Запрос</button>
     <p v-if="token != ''">Token: {{ token }} </p>
 
     <template v-for="item in items">
       <p>
         <label>
           <input class="filled-in" type="checkbox" v-bind:id="item.name" v-model="bought" v-bind:value="item.name"
-            :disabled="bought.includes(item.name)">
+            v-on:click="onCheck">
           <span>{{item.name}}</span>
         </label>
+        <button v-on:click="deleteItem" v-bind:id="'button_' + item.name">Delete</button>
       </p>
     </template>
-
   </div>
   <script src="script.js"></script>
 </body>
