@@ -1,7 +1,7 @@
 var example2 = new Vue({
   el: '#example',
   data: {
-    address: '127.0.0.1',
+    address: 'https://127.0.0.1',
     user: '',
     password: '',
     token: '',
@@ -12,7 +12,7 @@ var example2 = new Vue({
   methods: {
     getToken: function(event) {
       if (this.user != '' && this.password != '') {
-          axios.post('https://' + this.address + '/auth', {
+          axios.post(this.address + '/auth', {
             // POST data
             user: this.user, 
             password: this.password
@@ -34,12 +34,13 @@ var example2 = new Vue({
         alert('Incorrect data');
       }
     },
+
     getItems: function(event) {
       if (this.token == '') {
         this.getToken(this);
         return
       }
-      axios.get('https://' + this.address + '/shoplist?token=' + this.token)
+      axios.get(this.address + '/shoplist?token=' + this.token)
           .then(
               (response) => {
                 // if ok
@@ -56,11 +57,32 @@ var example2 = new Vue({
                 console.log(error)
               })
     },
+
     deleteItem: function(event) {
-      return;
+      itemName = event.target.id.split('_')[1];
+      console.log(itemName + ' clicked delete');
+      axios.delete(
+          this.address + '/shoplist',
+          {data: {token: this.token, name: itemName}});
+      this.getItems();
     },
+
     onCheck: function(event) {
-      console.log(event.target.id);
+      checked = 'false';
+      if (this.bought.includes(event.target.id)) {
+        console.log(event.target.id + ' checked');
+        checked = 'true';
+      } else {
+        console.log(event.target.id + ' unchecked');
+        checked = 'false';
+      }
+
+      axios.post(this.address + '/shoplist/bought', {
+        // POST data
+        token: this.token,
+        name: event.target.id,
+        bought: checked
+      })
     }
   }
 })

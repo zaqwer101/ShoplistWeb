@@ -21,7 +21,7 @@
       <p>
         <label>
           <input class="filled-in" type="checkbox" v-bind:id="item.name" v-model="bought" v-bind:value="item.name"
-            v-on:click="onCheck">
+            v-on:change="onCheck">
           <span>{{item.name}}</span>
         </label>
         <button v-on:click="deleteItem" v-bind:id="'button_' + item.name">Delete</button>
