@@ -11,12 +11,16 @@
 </head>
 
 <body>
-  <div id="example" class="container">
+  <div id="shoplist" class="container">
+
     <input v-model="user" placeholder="Username" v-if="token == ''">
     <input v-model="password" placeholder="Password" v-if="token == ''">
-    <button v-on:click=" getItems">Запрос</button>
-    <p v-if="token != ''">Token: {{ token }} </p>
+    <button v-on:click="auth" v-if="token == ''">Войти</button>
+    <button v-on:click="register" v-if="token == ''">Регистрация</button>
 
+    <button v-on:click="getItems" v-if="token != ''">Запрос</button>
+    <p v-if="token != ''">Token: {{ token }} </p>
+    <p v-if="items.length == '0' && token != ''">Список пустой</p>
     <template v-for="item in items">
       <p>
         <label>
@@ -24,7 +28,7 @@
             v-on:change="onCheck">
           <span>{{item.name}}</span>
         </label>
-        <button v-on:click="deleteItem" v-bind:id="'button_' + item.name">Delete</button>
+        <button v-on:click="deleteItem" v-bind:id="'button_' + item.name">Удалить</button>
       </p>
     </template>
   </div>
