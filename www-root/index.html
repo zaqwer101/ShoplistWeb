@@ -14,24 +14,20 @@
   <div id="shoplist" class="container">
   <div class="row">
   <div class="col s12 m6">
+    
     <input v-model="user" placeholder="Имя пользователя" v-if="token == ''">
-    <input v-model="password" placeholder="Пароль" v-if="token == ''">
+    <input v-model="password" placeholder="Пароль" v-if="token == ''" type="password">
     <button v-on:click="auth" v-if="token == ''">Войти</button>
     <button v-on:click="register" v-if="token == ''">Регистрация</button>
-
-    <button v-on:click="getItems" v-if="token != ''">Обновить список</button>
     <input v-model="itemName" placeholder="Наименование" v-if="token != ''">
-    <button v-on:click="addItem" v-if="token != ''">Добавить</button>
-
-    <p v-if="token != ''">Токен: {{ token }} </p>
+    <button v-on:click="addItem" type="submit" v-if="token != ''">Добавить</button>
     <p v-if="items.length == '0' && token != ''">Список пустой</p>
-
     <table>
       <template v-for="item in items">
         <tr>
           <td>
             <label>
-              <input class="filled-in" type="checkbox" v-bind:id="item.name" 
+              <input class="filled-in deep-purple" type="checkbox" v-bind:id="item.name" 
                 v-model="bought" v-on:change="onCheck" v-bind:value="item.name">
               <span></span>
             </label>
@@ -41,7 +37,6 @@
         </tr>
       </template>
   </table>
-  
   </div>
   </div>
   </div>
