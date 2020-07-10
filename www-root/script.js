@@ -75,7 +75,16 @@ var example2 = new Vue({
     },
 
     register: function() {
-
+      if (this.user != '' && this.password != '') {
+        this.request('/register', 'post', {
+          user: this.user, 
+          password: this.password
+        }).then(
+          () => { this.getItems(); }
+        );
+      } else {
+        alert("Регистрация не удалась");
+      }
     },
 
     // функция, вызываемая при чеке элемента
