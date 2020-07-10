@@ -15,28 +15,28 @@ var example2 = new Vue({
     request: function(endpoint, method, data) {
       if (method == 'post') {
         return axios.post(this.address + endpoint, data)
-          .then(r => r)
-          .catch(err => console.error(err))
+        .then(r => r)
+        .catch(err => console.error(err))
       }
 
       if (method == 'get') {
         return axios.get(this.address + endpoint + '?' + data)
-          .then(r => r)
-          .catch(err => console.error(err))
+        .then(r => r)
+        .catch(err => console.error(err))
       }
     },
 
     // получить токен
     getToken: function(func = null /* функция, которую выполнить после получения токена */) {
       this.request('/auth', 'post', { user: this.user, password: this.password })
-        .then(r => {
-          this.token = r.data.token;
-          console.log("Токен: " + r.data.token);
-          if (func != null) func();
-        })
-        .catch(err => { 
-          alert("Аутентификация не удалась!")
-        })
+      .then(r => {
+        this.token = r.data.token;
+        console.log("Токен: " + r.data.token);
+        if (func != null) func();
+      })
+      .catch(err => { 
+        alert("Аутентификация не удалась!")
+      })
     }, 
 
     // провести аутентификацию и показать основную форму
@@ -56,14 +56,14 @@ var example2 = new Vue({
         }
       } else {
         this.request('/shoplist', 'get', 'token=' + this.token)
-          .then(r => {
-            if (r.data.length != 0) console.log("Список предметов:")
-            this.items = r.data;
-            r.data.forEach(item => {
-              console.log(item.name + ": " + item.bought);
-              if (item.bought == 'true') this.bought.push(item.name);
-            });
-          })
+        .then(r => {
+          if (r.data.length != 0) console.log("Список предметов:")
+          this.items = r.data;
+          r.data.forEach(item => {
+            console.log(item.name + ": " + item.bought);
+            if (item.bought == 'true') this.bought.push(item.name);
+          });
+        })
       }
     },
 
@@ -72,7 +72,20 @@ var example2 = new Vue({
     },
 
     onCheck: function(event) {
+      checked = 'false';
+      if (this.bought.includes(event.target.id)) {
+        console.log(event.target.id + ' checked');
+        checked = 'true';
+      } else {
+        console.log(event.target.id + ' unchecked');
+        checked = 'false';
+      }
 
+      this.request('/shoplist/bought', 'post', {
+        token: this.token,
+        name: event.target.id,
+        bought: checked
+      })
     },
 
     deleteItem: function(event) {
