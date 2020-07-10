@@ -10,6 +10,13 @@ var example2 = new Vue({
     bought: [],
   },
 
+  created: function () {
+    console.log("Инстанс ожил");
+    if (this.loadToken()) {
+      this.getItems();
+    }
+  },
+
   methods: {
 
     // сделать запрос к API
@@ -39,6 +46,7 @@ var example2 = new Vue({
       .then(r => {
         this.token = r.data.token;
         console.log("Токен: " + r.data.token);
+        this.saveToken();
         if (func != null) func();
       })
       .catch(err => { 
@@ -50,6 +58,23 @@ var example2 = new Vue({
     auth: function() {
       if (this.user != '' && this.password != '') {
         this.getItems(); // getItems уже позовёт getToken, если токена нет
+      }
+    },
+
+    // регистрация нового пользователя
+    register: function() {
+      if (this.user != '' && this.password != '') {
+        this.request('/register', 'post', {
+          user: this.user, 
+          password: this.password
+        }).then(
+          () => { 
+            this.getItems(); 
+            this.saveToken();
+          }
+        );
+      } else {
+        alert("Регистрация не удалась");
       }
     },
 
@@ -71,19 +96,6 @@ var example2 = new Vue({
             if (item.bought == 'true') this.bought.push(item.name);
           });
         })
-      }
-    },
-
-    register: function() {
-      if (this.user != '' && this.password != '') {
-        this.request('/register', 'post', {
-          user: this.user, 
-          password: this.password
-        }).then(
-          () => { this.getItems(); }
-        );
-      } else {
-        alert("Регистрация не удалась");
       }
     },
 
@@ -124,8 +136,22 @@ var example2 = new Vue({
         .then(() => {
           this.getItems();
         });
-        
       }
+    }, 
+
+    saveToken: function() {
+      localStorage.token = this.token; 
+      console.log("Токен сохранен");
+    }, 
+
+    loadToken: function() {
+      if (localStorage.token) {
+        this.token = localStorage.token;
+        console.log("Токен загружен");
+        return true;
+      } 
+      console.log("Не удалось загрузить токен");
+      return false;
     }
   }
 })
