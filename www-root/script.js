@@ -58,9 +58,9 @@ var example2 = new Vue({
         this.request('/shoplist', 'get', 'token=' + this.token)
           .then(r => {
             if (r.data.length != 0) console.log("Список предметов:")
+            this.items = r.data;
             r.data.forEach(item => {
               console.log(item.name + ": " + item.bought);
-              this.items.push(item);
               if (item.bought == 'true') this.bought.push(item.name);
             });
           })
