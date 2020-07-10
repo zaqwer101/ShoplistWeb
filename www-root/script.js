@@ -16,13 +16,19 @@ var example2 = new Vue({
       if (method == 'post') {
         return axios.post(this.address + endpoint, data)
         .then(r => r)
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
       }
 
       if (method == 'get') {
         return axios.get(this.address + endpoint + '?' + data)
         .then(r => r)
-        .catch(err => console.error(err))
+        .catch(err => console.error(err));
+      }
+
+      if (method == 'delete') {
+        return axios.delete(this.address + endpoint, {data: data})
+        .then(r => r)
+        .catch(err => console.error(err));
       }
     },
 
@@ -46,7 +52,7 @@ var example2 = new Vue({
       }
     },
 
-    // получить и заполнить список предметов
+    // получить и заполнить список элементов
     getItems: function() {
       if (this.token == '') {
         console.log("Токен не задан");
@@ -57,7 +63,7 @@ var example2 = new Vue({
       } else {
         this.request('/shoplist', 'get', 'token=' + this.token)
         .then(r => {
-          if (r.data.length != 0) console.log("Список предметов:")
+          if (r.data.length != 0) console.log("Список элементов:")
           this.items = r.data;
           r.data.forEach(item => {
             console.log(item.name + ": " + item.bought);
@@ -71,6 +77,7 @@ var example2 = new Vue({
 
     },
 
+    // функция, вызываемая при чеке элемента
     onCheck: function(event) {
       checked = 'false';
       if (this.bought.includes(event.target.id)) {
@@ -88,8 +95,15 @@ var example2 = new Vue({
       })
     },
 
+    // удаление элемента
     deleteItem: function(event) {
-
+      itemName = event.target.id.split('_')[1];
+      console.log(itemName + ' clicked delete');
+      this.request('/shoplist', 'delete', {
+        token: this.token,
+        name: itemName 
+      });
+      this.getItems();
     }
   }
 })
