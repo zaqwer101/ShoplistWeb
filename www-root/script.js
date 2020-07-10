@@ -4,6 +4,7 @@ var example2 = new Vue({
     address: 'https://127.0.0.1',
     user: '',
     password: '',
+    itemName: '',
     token: '',
     items: [],
     bought: [],
@@ -104,6 +105,18 @@ var example2 = new Vue({
         name: itemName 
       });
       this.getItems();
+    }, 
+
+    // добавить элемент
+    addItem: function() {
+      if (this.itemName == '') alert('Имя не может быть пустым')
+      else {
+        this.request('/shoplist', 'post', { token: this.token, name: this.itemName })
+        .then(() => {
+          this.getItems();
+        });
+        
+      }
     }
   }
 })
