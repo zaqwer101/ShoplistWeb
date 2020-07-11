@@ -1,7 +1,7 @@
 var example2 = new Vue({
   el: '#shoplist',
   data: {
-    address: 'https://127.0.0.1',
+    address: 'https://palearis.cloud',
     user: '',
     password: '',
     itemName: '',
@@ -123,9 +123,11 @@ var example2 = new Vue({
       console.log(itemName + ' clicked delete');
       this.request('/shoplist', 'delete', {
         token: this.token,
-        name: itemName 
-      });
-      this.getItems();
+        name: itemName}).then(
+        () => {
+          this.getItems();
+        }
+      );
     }, 
 
     // добавить элемент
