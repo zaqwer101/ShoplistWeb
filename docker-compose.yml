@@ -8,5 +8,5 @@ services:
       - ./certs:/certs
 
     ports:
-      - 8080:443
+      - 8080:80
 
