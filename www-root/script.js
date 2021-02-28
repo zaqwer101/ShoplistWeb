@@ -5,6 +5,7 @@ var example2 = new Vue({
     user: '',
     password: '',
     itemName: '',
+    itemShop: null,
     token: '',
     items: [],
     bought: [],
@@ -123,7 +124,7 @@ var example2 = new Vue({
         if (r.data.length != 0) console.log("Список элементов:")
         this.items = r.data;
         r.data.forEach(item => {
-          console.log(item.name + ": " + item.bought);
+          console.log(item.name + " x" + item.bought + ": " + item.shop);
           if (item.bought == 'true') this.bought.push(item.name);
         });
       })
@@ -151,7 +152,7 @@ var example2 = new Vue({
       itemName = event.target.id.split('_')[1];
       console.log(itemName + ' clicked delete');
       this.authorizedRequest('/shoplist', 'delete', {
-        name: itemName}).then(
+        name: itemName, shop: itemShop}).then(
         () => {
           this.getItems();
         }
@@ -162,7 +163,7 @@ var example2 = new Vue({
     addItem: function() {
       if (this.itemName == '') alert('Имя не может быть пустым')
       else {
-        this.authorizedRequest('/shoplist', 'post', { name: this.itemName })
+        this.authorizedRequest('/shoplist', 'post', { name: this.itemName, shop: this.itemShop })
         .then(() => {
           this.getItems();
         });

@@ -20,6 +20,7 @@
     <button v-on:click="auth" v-if="!isTokenValid()">Войти</button>
     <button v-on:click="register" v-if="!isTokenValid()">Регистрация</button>
     <input v-model="itemName" placeholder="Наименование" v-if="isTokenValid()">
+    <input v-model="itemShop" placeholder="Магазин" v-if="isTokenValid()">
     <button v-on:click="addItem" type="submit" v-if="isTokenValid()">Добавить</button>
     <p v-if="items.length == '0' && isTokenValid()">Список пустой</p>
     <table>
@@ -32,7 +33,7 @@
               <span></span>
             </label>
           </td>
-          <td>{{item.name}} (x{{item.amount}})</td>
+          <td>{{item.name}} (x{{item.amount}})</td> <td>{{item.shop}}</td>
           <td><button v-on:click="deleteItem" v-bind:id="'button_' + item.name">Удалить</button></td>
         </tr>
       </template>
