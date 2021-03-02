@@ -16,9 +16,8 @@ var example2 = new Vue({
   created: function () {
     console.log("Инстанс ожил");
     this.getServerInfo();
-    if (this.loadToken()) {
+    if (this.loadToken())
       this.getItems();
-    }
   },
 
   methods: {
@@ -55,11 +54,12 @@ var example2 = new Vue({
     authorizedRequest: function(endpoint, method, data = null)
     {
       var timeDiff = parseInt(Date.now() / 1000) - this.token_date;
-      console.log("TTL токена - " + this.token_ttl)
-      console.log("С момента получения токена прошло " + timeDiff);
+      console.log("TTL токена: " + this.token_ttl)
+      console.log("С момента получения токена прошло: " + timeDiff);
+      console.log("Текущее время: " + parseInt(Date.now() / 1000))
 
       if (!this.isTokenValid()) { // значит токен не токен, получаем новый
-        console.log("Токену осталось жить " + (this.token_ttl - timeDiff))
+        console.log("Токену осталось жить: " + (this.token_ttl - timeDiff))
         this.getToken();
       }
       
@@ -180,6 +180,8 @@ var example2 = new Vue({
     loadToken: function() {
       if (localStorage.token) {
         this.token = localStorage.token;
+        if (!this.checkToken())   // если токен на стороне сервера не валидный, 
+          return false;           // значит и загружать его нет смысла 
         this.token_date = Number(localStorage.token_date); 
         this.token_ttl = Number(localStorage.token_ttl);
         console.log("Токен загружен");
@@ -187,6 +189,29 @@ var example2 = new Vue({
       } 
       console.log("Не удалось загрузить токен");
       return false;
+    },
+
+    unloadToken: function() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('token_date');
+    },
+
+    // проверить, валидный ли токен на стороне сервера
+    checkToken: function() {
+      if (this.token != '' && this.token) {
+        this.authorizedRequest('/auth', 'get').then( r => {
+          if (r.data.user) {
+            console.log("Current token user: " + r.data.user);
+            return true;
+          } else {
+            console.log("Current token is invalid");
+            this.unloadToken();
+            return false;
+          }
+        });
+      } else {
+        return false;
+      }
     },
 
     getServerInfo: function() {
